@@ -1,0 +1,59 @@
+/ {
+    aliases {
+        uros-serial-port = &usart3;
+    };
+    chosen {
+        zephyr,canbus = &fdcan1;
+    };
+};
+
+&usart3 {
+    status = "okay"; 
+    current-speed = <921600>; 
+};
+
+&fdcan1 {
+    status = "okay";
+    bus-speed = < 500000 >;
+    bus-speed-data = < 500000 >;
+    pinctrl-0 = < &fdcan1_rx_pb8 &fdcan1_tx_pb9 >;
+    pinctrl-names = "default";
+    
+};
+
+&zephyr_udc0 {
+    cdc_acm_uart0: cdc_acm_uart0 {
+            compatible = "zephyr,cdc-acm-uart";
+            label = "CDC_ACM_0";
+    };
+};
+
+
+&arduino_i2c {
+    clock-frequency = <I2C_BITRATE_FAST>;
+    status = "okay";
+    
+    /*lsm6dsv16x: lsm6dsv16x@6b {
+    compatible = "st,lsm6dsv16x";
+    reg = <0x6b>; 
+    status = "okay"; 
+    }; */
+
+
+    
+    lis3mdl: lis3mdl-magn@1c                                                           {
+        compatible = "st,lis3mdl-magn";
+        reg = <0x1c>;
+        status = "okay";
+        irq-gpios = < &arduino_header 5 GPIO_ACTIVE_HIGH >;
+    };
+
+     bm280@77 {
+        compatible = "bosch,bme280";
+        reg = <0x77 >;
+    };
+
+    
+
+    
+};
